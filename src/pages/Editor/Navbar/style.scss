@@ -1,0 +1,29 @@
+.navbar {
+    display: flex;
+    height: 100%;
+    width: 25%;
+    height: 100%;
+    background: #001529;
+    .menu {
+        display: flex;
+        color: white;
+        .list-image {
+            max-height: 100%;
+            overflow: auto;
+            display: flex;
+            flex-wrap: wrap;
+            .item {
+                width: 50%;
+                padding: 10px;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                    height: 150px;
+                    display: block;
+                    border: 1px solid white;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+}
