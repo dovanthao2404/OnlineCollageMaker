@@ -1,12 +1,15 @@
 .main {
     width: 60%;
     height: 100%;
-    background-color: blue;
     display: flex;
     flex-direction: column;
     .tool {
         height: 10%;
         background: red;
+        display: flex;
+        .tool-item {
+            margin-right: 0.5rem;
+        }
     }
     .content {
         height: 90%;

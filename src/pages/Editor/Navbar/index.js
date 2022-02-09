@@ -2,13 +2,8 @@ import { Button, DatePicker } from 'antd';
 import React, { useState } from 'react';
 import { Menu } from 'antd';
 import {
-    AppstoreOutlined,
-    MenuUnfoldOutlined,
-    MenuFoldOutlined,
-    PieChartOutlined,
     DesktopOutlined,
-    ContainerOutlined,
-    MailOutlined, FileImageOutlined
+    FileImageOutlined
 } from '@ant-design/icons';
 import "./style.scss";
 import { fabric } from "fabric";
@@ -41,8 +36,21 @@ export default function Navbar() {
                         return <div key={index} className="item">
                             <img onClick={() => {
                                 fabric.Image.fromURL(item, function (img) {
+                                    img.crossOrigin = "anonymous";
+                                    if (img.width >= 1500) {
+                                        img.scale(0.2);
+                                    } else if (img.width >= 800) {
+                                        img.scale(0.3);
+                                    } else if (img.width >= 600) {
+                                        img.scale(0.4);
+                                    } else if (img.width >= 400) {
+                                        img.scale(0.6);
+                                    } else if (img.width >= 300) {
+                                        img.scale(0.7);
+                                    }
                                     canvas.add(img).setActiveObject(img);
-
+                                }.bind(this), {
+                                    crossOrigin: 'anonymous'
                                 });
                             }} src={item} alt={item} />
                         </div>;
