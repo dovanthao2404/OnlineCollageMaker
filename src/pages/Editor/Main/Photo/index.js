@@ -8,12 +8,14 @@ export default function Photo() {
     const { canvas, backgroundColor } = useSelector(state => state.editorReducer);
     const dispatch = useDispatch();
 
+
     useEffect(() => {
         const canvasWrapper = document.querySelector("#canvas-wrapper");
         const canvas = new fabric.Canvas('canvas', {
             width: canvasWrapper.offsetWidth,
             height: canvasWrapper.offsetHeight
         });
+
         dispatch(setCanvas(canvas));
     }, []);
 

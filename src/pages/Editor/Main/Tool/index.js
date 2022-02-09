@@ -1,7 +1,6 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actChangeBGColor } from '../../../../redux/actions/editor';
-import { DeleteOutlined } from "@ant-design/icons";
+import { actChangeBGColor, actSetListObj } from '../../../../redux/actions/editor';
 export default function Tool() {
     const dispatch = useDispatch();
 
@@ -9,8 +8,17 @@ export default function Tool() {
 
 
     const handleRemove = () => {
-        canvas.remove(canvas.getActiveObject());
-        canvas.renderAll();
+        if (canvas.getActiveObject()) {
+            canvas.remove(canvas.getActiveObject());
+            canvas.renderAll();
+            dispatch(actSetListObj(canvas.getObjects()));
+
+        };
+    };
+
+    const handleDeleteAll = () => {
+        canvas.remove(...canvas.getObjects());
+        dispatch(actSetListObj(canvas.getObjects()));
     };
 
     return (
@@ -21,7 +29,9 @@ export default function Tool() {
                 }} />
             </div>
             <div className="tool-item">
-                <DeleteOutlined style={{ cursor: "pointer" }} onClick={handleRemove} />
+
+                <button onClick={handleRemove}>Delete One</button>
+                <button onClick={handleDeleteAll}>Delete All</button>
             </div>
         </div>
     );

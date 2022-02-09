@@ -2,19 +2,25 @@ import { Button, DatePicker } from 'antd';
 import React, { useState } from 'react';
 import { Menu } from 'antd';
 import {
-    DesktopOutlined,
+    PlusSquareOutlined,
     FileImageOutlined
 } from '@ant-design/icons';
 import "./style.scss";
 import { fabric } from "fabric";
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { actSetListObj } from '../../../redux/actions/editor';
+import Square from './Square';
+import Circle from './Circle';
 const { SubMenu } = Menu;
 
 const data = require("../../../data/img-data.json");
 
 export default function Navbar() {
     const array = Array.from(new Set(data));
+    const dispatch = useDispatch();
     const { canvas } = useSelector(state => state.editorReducer);
+    const [type, setType] = useState("image");
     return (
         <div className='navbar'>
             <div className="menu">
@@ -24,14 +30,20 @@ export default function Navbar() {
                     theme="dark"
                     inlineCollapsed={true}
                 >
-                    <Menu.Item key="1" icon={<FileImageOutlined />}>
+                    <Menu.Item onClick={() => {
+                        setType("image");
+                    }} key="1" icon={<FileImageOutlined />}>
                         <p>Image</p>
                     </Menu.Item>
-                    <Menu.Item key="2" icon={<DesktopOutlined />}>
-                        <p>geometry</p>
+                    <Menu.Item onClick={() => {
+                        setType("geometry");
+
+                    }} key="2" icon={<PlusSquareOutlined />}>
+                        <p>Geometry</p>
                     </Menu.Item>
                 </Menu>
-                <div className="list-image">
+
+                {type === "image" ? (<div className="list-image">
                     {array?.map((item, index) => {
                         return <div key={index} className="item">
                             <img onClick={() => {
@@ -48,7 +60,10 @@ export default function Navbar() {
                                     } else if (img.width >= 300) {
                                         img.scale(0.7);
                                     }
+
                                     canvas.add(img).setActiveObject(img);
+
+                                    dispatch(actSetListObj(canvas.getObjects()));
                                 }.bind(this), {
                                     crossOrigin: 'anonymous'
                                 });
@@ -56,7 +71,10 @@ export default function Navbar() {
                         </div>;
                     })
                     }
-                </div>
+                </div>) : <div className="list-geometry">
+                    <Square />
+                    <Circle />
+                </div>}
             </div>
         </div>
     );

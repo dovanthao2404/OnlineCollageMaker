@@ -2,7 +2,8 @@
 import * as ActionTypes from "./../constants/editor";
 const init = {
     canvas: null,
-    backgroundColor: "#ffff"
+    backgroundColor: "#ffff",
+    listItem: []
 };
 
 const editorReducer = (state = init, { type, payload }) => {
@@ -12,6 +13,9 @@ const editorReducer = (state = init, { type, payload }) => {
             return { ...state };
         case ActionTypes.CHANGE_BACKGROUND_COLOR:
             state.backgroundColor = payload;
+            return { ...state };
+        case ActionTypes.SET_LIST_ITEM:
+            state.listItem = payload;
             return { ...state };
         default:
             return state;
