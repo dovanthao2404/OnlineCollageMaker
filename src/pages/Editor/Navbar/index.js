@@ -1,5 +1,5 @@
 import { Button, DatePicker } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import {
     PlusSquareOutlined,
@@ -17,10 +17,22 @@ import Line from './Line';
 import CircleBorder from './CircleBorder';
 
 
-const data = require("../../../data/img-data.json");
 
 export default function Navbar() {
-    const array = Array.from(new Set(data));
+
+    const [data, setData] = useState();
+
+    useEffect(() => {
+        (async () => {
+            const url = "https://raw.githubusercontent.com/dovanthao2404/test/master/data.json";
+
+            const res = await fetch(url);
+            const data = await res.json();
+            setData(data);
+        })();
+
+    }, []);
+
     const dispatch = useDispatch();
     const { canvas } = useSelector(state => state.editorReducer);
     const [type, setType] = useState("image");
@@ -47,7 +59,7 @@ export default function Navbar() {
                 </Menu>
 
                 {type === "image" ? (<div className="list-image">
-                    {array?.map((item, index) => {
+                    {data?.map((item, index) => {
                         return <div key={index} className="item">
                             <img onError={(e) => {
                                 e.target.src = "https://wpklik.com/wp-content/uploads/2019/03/A-404-Page-Best-Practices-and-Design-Inspiration.jpg";
@@ -55,7 +67,10 @@ export default function Navbar() {
                             }} onClick={() => {
                                 fabric.Image.fromURL(item, function (img) {
                                     img.crossOrigin = "anonymous";
-                                    if (img.width >= 1500) {
+                                    if (img.width >= 2000) {
+                                        console.log("run");
+                                        img.scale(0.01);
+                                    } else if (img.width >= 1500) {
                                         img.scale(0.2);
                                     } else if (img.width >= 800) {
                                         img.scale(0.3);
