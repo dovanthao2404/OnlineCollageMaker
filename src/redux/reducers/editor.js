@@ -3,7 +3,8 @@ import * as ActionTypes from "./../constants/editor";
 const init = {
     canvas: null,
     listItem: [],
-    itemActive: null
+    itemActive: null,
+    removePointer: () => { }
 };
 
 const editorReducer = (state = init, { type, payload }) => {
@@ -16,6 +17,9 @@ const editorReducer = (state = init, { type, payload }) => {
             return { ...state };
         case ActionTypes.SET_ITEM_ACTIVE:
             state.itemActive = payload;
+            return { ...state };
+        case ActionTypes.SET_FUNCTION_REMOVE_POINTER:
+            state.removePointer = payload;
             return { ...state };
         default:
             return state;

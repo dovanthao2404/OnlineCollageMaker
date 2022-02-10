@@ -18,7 +18,6 @@ export default function Index() {
         link.download = `your-beautiful.${ext}`;
         link.click();
     };
-    console.log(listItem);
 
 
     return (

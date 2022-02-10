@@ -15,3 +15,7 @@ export const actSetObjActive = (payload) => ({
     type: ActionTypes.SET_ITEM_ACTIVE,
     payload
 });
+export const actSetFunctionRemovePointer = (payload) => ({
+    type: ActionTypes.SET_FUNCTION_REMOVE_POINTER,
+    payload
+});

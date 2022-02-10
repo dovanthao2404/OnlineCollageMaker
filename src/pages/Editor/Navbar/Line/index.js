@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { fabric } from "fabric";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { actSetListObj, actSetObjActive } from '../../../../redux/actions/editor';
+import { actSetListObj } from '../../../../redux/actions/editor';
 export default function Line() {
     const [canvas, setCanvas] = useState();
-    const { canvas: canvasGlobal } = useSelector(state => state.editorReducer);
+    const { canvas: canvasGlobal, removePointer } = useSelector(state => state.editorReducer);
 
     const dispatch = useDispatch();
 
@@ -18,8 +18,11 @@ export default function Line() {
         setCanvas(canvas);
     }, []);
 
+
+
     const addDot = (e, line) => {
         let obj = e.target;
+        removePointer();
         if (line.status !== "have-dot") {
             let pointer1 = new fabric.Circle({
                 id: "pointer1",
@@ -48,15 +51,12 @@ export default function Line() {
             });
             line.set("status", "have-dot");
             canvasGlobal.add(pointer1, pointer2);
-            // canvasGlobal.discardActiveObject();
+            dispatch(actSetListObj(canvasGlobal.getObjects()));
             canvasGlobal.renderAll();
-            canvasGlobal.on({
-                // "object:moving": endPointOfLineFollowPointer,
-                // "selection:cleared": removePointersOnSelectionCleared,
-                // "selection:updated": removePointersOnSelectionUpdate,
-            });
+
         }
     };
+
 
     useEffect(() => {
         if (canvas) {
@@ -70,18 +70,16 @@ export default function Line() {
             canvas.on("mouse:up", () => {
 
                 const line = new fabric.Line([50, 100, 200, 200], {
-
+                    name: "line-straight",
                     selectable: false,
                     stroke: 'red', strokeWidth: 5,
-                    // evented: false,
                     hasBorders: false
                 });
+                removePointer();
 
-                // dispatch(actSetObjActive(line));
+
                 line.on("mouseup", (e,) => {
                     if (!canvasGlobal.isDrawingMode) {
-                        // dispatch(actSetObjActive(line));
-                        console.log("run");
                         addDot(e, line);
                     }
                 });

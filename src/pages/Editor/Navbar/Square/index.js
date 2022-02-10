@@ -27,9 +27,7 @@ export default function Square() {
                 hoverCursor: 'pointer',
                 selectable: false
             });
-            // square.on("mouse:up", () => {
-            //     console.log("run mouse");
-            // });
+
             canvas.on("mouse:up", () => {
 
                 const square = new fabric.Rect({
