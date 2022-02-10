@@ -9,10 +9,12 @@ import "./style.scss";
 import { fabric } from "fabric";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { actSetListObj } from '../../../redux/actions/editor';
+import { actSetListObj, actSetObjActive } from '../../../redux/actions/editor';
 import Square from './Square';
+import Triangle from './Triangle';
 import Circle from './Circle';
-const { SubMenu } = Menu;
+import CircleBorder from './CircleBorder';
+
 
 const data = require("../../../data/img-data.json");
 
@@ -63,6 +65,15 @@ export default function Navbar() {
 
                                     canvas.add(img).setActiveObject(img);
 
+
+                                    dispatch(actSetObjActive(img));
+                                    img.on("mouseup", () => {
+                                        if (!canvas.isDrawingMode) {
+                                            dispatch(actSetObjActive(img));
+                                        }
+                                    });
+                                    canvas.isDrawingMode = false;
+
                                     dispatch(actSetListObj(canvas.getObjects()));
                                 }.bind(this), {
                                     crossOrigin: 'anonymous'
@@ -74,6 +85,8 @@ export default function Navbar() {
                 </div>) : <div className="list-geometry">
                     <Square />
                     <Circle />
+                    <CircleBorder />
+                    <Triangle />
                 </div>}
             </div>
         </div>

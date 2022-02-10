@@ -4,13 +4,14 @@ export const setCanvas = (payload) => ({
     payload
 });
 
-export const actChangeBGColor = (payload) => ({
-    type: ActionTypes.CHANGE_BACKGROUND_COLOR,
+
+export const actSetListObj = (payload) => ({
+    type: ActionTypes.SET_LIST_ITEM,
     payload
 });
 
 
-export const actSetListObj = (payload) => ({
-    type: ActionTypes.SET_LIST_ITEM,
+export const actSetObjActive = (payload) => ({
+    type: ActionTypes.SET_ITEM_ACTIVE,
     payload
 });

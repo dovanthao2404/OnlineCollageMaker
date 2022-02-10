@@ -3,14 +3,14 @@ import { fabric } from "fabric";
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { actSetListObj, actSetObjActive } from '../../../../redux/actions/editor';
-export default function Square() {
+export default function CircleBorder() {
     const [canvas, setCanvas] = useState();
     const { canvas: canvasGlobal } = useSelector(state => state.editorReducer);
 
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const canvasEle = document.getElementById("square");
+        const canvasEle = document.getElementById("circle-border");
         const canvas = new fabric.Canvas(canvasEle, {
             width: 50,
             height: 50,
@@ -20,34 +20,34 @@ export default function Square() {
 
     useEffect(() => {
         if (canvas) {
-            const square = new fabric.Rect({
-                width: 50,
-                height: 50,
-                fill: '#008000',
+            const circle = new fabric.Circle({
+                radius: 22,
+                fill: '#039BE5',
                 hoverCursor: 'pointer',
-                selectable: false
+                selectable: false,
+                stroke: '#ff0000',
+                strokeWidth: 3,
             });
-            // square.on("mouse:up", () => {
-            //     console.log("run mouse");
-            // });
+
             canvas.on("mouse:up", () => {
 
-                const square = new fabric.Rect({
-                    width: 50,
-                    height: 50,
-                    fill: '#008000',
+                const circle = new fabric.Circle({
+                    radius: 22,
+                    fill: '#039BE5',
                     hoverCursor: 'pointer',
                     selectable: true,
-                    name: "square",
+                    stroke: '#ff0000',
+                    strokeWidth: 3,
+                    name: "circle border",
                     nameCommon: "geometry"
                 });
-                dispatch(actSetObjActive(square));
-                square.on("mouseup", () => {
+                dispatch(actSetObjActive(circle));
+                circle.on("mouseup", () => {
                     if (!canvasGlobal.isDrawingMode) {
-                        dispatch(actSetObjActive(square));
+                        dispatch(actSetObjActive(circle));
                     }
                 });
-                canvasGlobal.add(square).setActiveObject(square);;
+                canvasGlobal.add(circle).setActiveObject(circle);
                 canvasGlobal.isDrawingMode = false;
                 canvasGlobal.renderAll();
                 dispatch(actSetListObj(canvasGlobal.getObjects()));
@@ -55,13 +55,13 @@ export default function Square() {
             });
 
 
-            canvas.add(square);
+            canvas.add(circle);
         }
     }, [canvas]);
 
     return (
         <div className="item">
-            <canvas id="square"></canvas>
+            <canvas id="circle-border"></canvas>
         </div>
     );
 }

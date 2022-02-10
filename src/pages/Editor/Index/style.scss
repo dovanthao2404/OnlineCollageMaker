@@ -1,6 +1,12 @@
 .index {
+    width: 15%;
+    height: 100%;
+    background-color: pink;
     .z-index {
         .item {
+            &.active {
+                background: rgb(183, 236, 255);
+            }
             img {
                 width: 20px;
                 height: 20px;

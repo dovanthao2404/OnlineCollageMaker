@@ -1,18 +1,19 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { actSetListObj } from '../../../../redux/actions/editor';
+import { actSetListObj, actSetObjActive } from '../../../../redux/actions/editor';
 
 export default function Item({ item }) {
-    const { canvas } = useSelector(state => state.editorReducer);
-    const src = item?._originalElement.currentSrc;
+    const { canvas, itemActive } = useSelector(state => state.editorReducer);
+    const src = item?._originalElement?.currentSrc;
     const dispatch = useDispatch();
-
-
-
+    let classActive = "";
+    if (itemActive === item) {
+        classActive = "active";
+    }
     return (
-        <div className='item'>
-            <img src={src} alt="" />
+        <div className={`item ${classActive}`}>
+            {src ? <img src={src} alt="" /> : item.name}
             <button onClick={() => {
                 canvas.moveTo(item, canvas.getObjects().indexOf(item) + 1);
                 canvas.requestRenderAll();
@@ -26,6 +27,15 @@ export default function Item({ item }) {
                     dispatch(actSetListObj(canvas.getObjects()));
                 }
             }}>down</button>
+
+            <button onClick={() => {
+                canvas.remove(item);
+                canvas.renderAll();
+                dispatch(actSetListObj(canvas.getObjects()));
+                dispatch(actSetObjActive(null));
+            }}>
+                delete
+            </button>
             {canvas.getObjects().indexOf(item)}
         </div>
     );

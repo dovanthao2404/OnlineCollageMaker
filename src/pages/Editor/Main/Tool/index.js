@@ -1,10 +1,13 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { actChangeBGColor, actSetListObj } from '../../../../redux/actions/editor';
+import { actChangeBGColor, actSetListObj, actSetObjActive } from '../../../../redux/actions/editor';
+
+import { fabric } from "fabric";
+
 export default function Tool() {
     const dispatch = useDispatch();
 
-    const { canvas } = useSelector(state => state.editorReducer);
+    const { canvas, itemActive } = useSelector(state => state.editorReducer);
 
 
     const handleRemove = () => {
@@ -12,27 +15,130 @@ export default function Tool() {
             canvas.remove(canvas.getActiveObject());
             canvas.renderAll();
             dispatch(actSetListObj(canvas.getObjects()));
-
+            dispatch(actSetObjActive(null));
         };
     };
 
     const handleDeleteAll = () => {
         canvas.remove(...canvas.getObjects());
         dispatch(actSetListObj(canvas.getObjects()));
+        dispatch(actSetObjActive(null));
+    };
+
+    const handleDiscardActive = () => {
+        canvas.discardActiveObject();
+        canvas.renderAll();
+        dispatch(actSetObjActive(null));
+    };
+
+    const handleRenderToolGeometry = () => {
+        if (itemActive?.nameCommon === "geometry") {
+            return <>
+                <span>Background {itemActive.name}  </span>
+                <input type="color" onChange={(e) => {
+                    itemActive.set("fill", e.target.value);
+                    canvas.renderAll();
+                }} value={itemActive?.fill} />
+            </>;
+        }
+        return <></>;
+    };
+
+    const handleRenderToolGeometryBorder = () => {
+        if (itemActive?.name?.includes("border")) {
+            return <>
+                <span>border color</span>
+                <input type="color" onChange={(e) => {
+                    itemActive.set("stroke", e.target.value);
+                    canvas.renderAll();
+                }} value={itemActive?.stroke} />
+                <span>border width</span>
+                <input type="number" min={1} onChange={(e) => {
+                    if (+e.target.value > itemActive.strokeWidth) {
+                        const valueRaise = + (+e.target.value - itemActive.strokeWidth);
+                        itemActive.set("width", itemActive.width + valueRaise);
+                        itemActive.set("height", itemActive.height + valueRaise);
+                        itemActive.set("radius", itemActive.radius + valueRaise);
+                    } else {
+                        const valueDecrease = + (- +e.target.value + itemActive.strokeWidth);
+                        itemActive.set("width", itemActive.width - valueDecrease);
+                        itemActive.set("height", itemActive.height - valueDecrease);
+                        itemActive.set("radius", itemActive.radius - valueDecrease);
+                    }
+                    itemActive.set("strokeWidth", +e.target.value);
+                    canvas.renderAll();
+                }} defaultValue={itemActive?.strokeWidth} />
+            </>;
+        }
+        return <></>;
+    };
+
+
+    const handleDrawingMode = () => {
+
+        if (!canvas.isDrawingMode) {
+            const pencil = new fabric.PencilBrush(canvas);
+            dispatch(actSetObjActive(null));
+            handleDiscardActive();
+            canvas.freeDrawingBrush = pencil;
+            canvas.freeDrawingBrush.width = 10;
+
+            canvas.isDrawingMode = true;
+        } else {
+            canvas.isDrawingMode = false;
+        }
+    };
+
+    const handleRenderToolLine = () => {
+        if (itemActive?.name === "line") {
+            return <>
+                <span>Background {itemActive.name}  </span>
+                <input type="color" onChange={(e) => {
+                    itemActive.set("stroke", e.target.value);
+                    canvas.renderAll();
+                }} value={itemActive?.stroke} />
+            </>;
+        }
+        return <></>;
     };
 
     return (
         <div className="tool">
             <div className="tool-item">
                 <span>Background </span><input type="color" onChange={(e) => {
-                    dispatch(actChangeBGColor(e.target.value));
-                }} />
-            </div>
-            <div className="tool-item">
 
-                <button onClick={handleRemove}>Delete One</button>
-                <button onClick={handleDeleteAll}>Delete All</button>
+                    canvas.backgroundColor = e.target.value;
+                    canvas.renderAll();
+                }} />
+                <button onClick={handleDrawingMode}>Pen</button>
+
             </div>
+
+            <div className="tool-item">
+                <button onClick={() => {
+                    const itext = new fabric.IText('Write here', {
+                        left: 100,
+                        top: 150,
+                        fill: '#fff',
+                        strokeWidth: 2,
+                    });
+
+                    canvas.add(itext).setActiveObject(itext);
+                    dispatch(actSetObjActive(itext));
+                    dispatch(actSetListObj(canvas.getObjects()));
+
+                }}>New text</button>
+
+                <button onClick={handleDeleteAll}>Delete All</button>
+                {itemActive ? <><button onClick={handleRemove}>Delete One</button>
+                    <button onClick={handleDiscardActive}>Discard Active</button></> : ""}
+                {handleRenderToolGeometry()}
+
+                {handleRenderToolGeometryBorder()}
+                {handleRenderToolLine()}
+
+            </div>
+
         </div>
     );
 }
