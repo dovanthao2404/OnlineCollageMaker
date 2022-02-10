@@ -38,7 +38,7 @@ export default function Tool() {
                 <input type="color" onChange={(e) => {
                     itemActive.set("fill", e.target.value);
                     canvas.renderAll();
-                }} value={itemActive?.fill} />
+                }} defaultValue={itemActive?.fill} />
             </>;
         }
         return <></>;
@@ -51,7 +51,7 @@ export default function Tool() {
                 <input type="color" onChange={(e) => {
                     itemActive.set("stroke", e.target.value);
                     canvas.renderAll();
-                }} value={itemActive?.stroke} />
+                }} defaultValue={itemActive?.stroke} />
                 <span>border width</span>
                 <input type="number" min={1} onChange={(e) => {
                     if (+e.target.value > itemActive.strokeWidth) {
@@ -96,10 +96,33 @@ export default function Tool() {
                 <input type="color" onChange={(e) => {
                     itemActive.set("stroke", e.target.value);
                     canvas.renderAll();
-                }} value={itemActive?.stroke} />
+                }} defaultValue={itemActive?.stroke} />
             </>;
         }
         return <></>;
+    };
+
+    const handleRenderToolText = () => {
+        if (itemActive?.name === "text") {
+            return <>
+                <span>color {itemActive.name}  </span>
+                <input type="color" onChange={(e) => {
+                    itemActive.set("fill", e.target.value);
+                    canvas.renderAll();
+                }} defaultValue={itemActive?.fill} />
+                <span>font {itemActive.name}  </span>
+
+                <select defaultValue={itemActive.fontFamily} onChange={(e) => {
+                    itemActive.fontFamily = e.target.value;
+                    canvas.renderAll();
+                }}>
+                    <option value="Times New Roman">Times</option>
+                    <option value="'Syne Tactile', cursive">Syne Tactile </option>
+                    <option value="Arial">Arial</option>
+
+                </select>
+            </>;
+        }
     };
 
     return (
@@ -119,8 +142,9 @@ export default function Tool() {
                     const itext = new fabric.IText('Write here', {
                         left: 100,
                         top: 150,
-                        fill: '#fff',
+                        fill: '#ffffff',
                         strokeWidth: 2,
+                        name: "text"
                     });
 
                     canvas.add(itext).setActiveObject(itext);
@@ -136,6 +160,7 @@ export default function Tool() {
 
                 {handleRenderToolGeometryBorder()}
                 {handleRenderToolLine()}
+                {handleRenderToolText()}
 
             </div>
 

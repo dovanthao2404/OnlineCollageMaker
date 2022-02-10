@@ -23,7 +23,7 @@ export default function Navbar() {
     const [data, setData] = useState();
 
     useEffect(() => {
-        (async () => {
+        ; (async () => {
             const url = "https://raw.githubusercontent.com/dovanthao2404/test/master/data.json";
 
             const res = await fetch(url);
@@ -67,7 +67,7 @@ export default function Navbar() {
                             }} onClick={() => {
                                 fabric.Image.fromURL(item, function (img) {
                                     img.crossOrigin = "anonymous";
-                                    if (img.width >= 2000) {
+                                    if (img.width >= 2500) {
                                         console.log("run");
                                         img.scale(0.01);
                                     } else if (img.width >= 1500) {
