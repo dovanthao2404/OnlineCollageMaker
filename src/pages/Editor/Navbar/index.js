@@ -13,6 +13,7 @@ import { actSetListObj, actSetObjActive } from '../../../redux/actions/editor';
 import Square from './Square';
 import Triangle from './Triangle';
 import Circle from './Circle';
+import Line from './Line';
 import CircleBorder from './CircleBorder';
 
 
@@ -87,6 +88,7 @@ export default function Navbar() {
                     <Circle />
                     <CircleBorder />
                     <Triangle />
+                    <Line />
                 </div>}
             </div>
         </div>
