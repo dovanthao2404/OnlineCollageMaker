@@ -49,7 +49,10 @@ export default function Navbar() {
                 {type === "image" ? (<div className="list-image">
                     {array?.map((item, index) => {
                         return <div key={index} className="item">
-                            <img onClick={() => {
+                            <img onError={(e) => {
+                                e.target.src = "https://wpklik.com/wp-content/uploads/2019/03/A-404-Page-Best-Practices-and-Design-Inspiration.jpg";
+
+                            }} onClick={() => {
                                 fabric.Image.fromURL(item, function (img) {
                                     img.crossOrigin = "anonymous";
                                     if (img.width >= 1500) {
