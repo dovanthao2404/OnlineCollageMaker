@@ -82,7 +82,7 @@ export default function Navbar() {
                     </div>
                     {data?.map((item, index) => {
                         return <div key={index} className="item">
-                            <img onError={(e) => {
+                            <img loading="lazy" onError={(e) => {
                                 e.target.src = "https://wpklik.com/wp-content/uploads/2019/03/A-404-Page-Best-Practices-and-Design-Inspiration.jpg";
 
                             }} onClick={() => {
