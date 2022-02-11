@@ -7,6 +7,8 @@ export default function Photo() {
 
     const { canvas } = useSelector(state => state.editorReducer);
     const dispatch = useDispatch();
+
+
     const endPointOfLineFollowPointer = (o) => {
         let objet = o?.target;
         if (objet) {
@@ -53,14 +55,12 @@ export default function Photo() {
     };
 
     useEffect(() => {
-        const canvasWrapper = document.querySelector("#canvas-wrapper");
         const canvas = new fabric.Canvas('canvas', {
-            width: canvasWrapper.offsetWidth,
-            height: canvasWrapper.offsetHeight
+            width: 466.66,
+            height: 660
         });
-
-
         dispatch(setCanvas(canvas));
+
     }, []);
 
     const removePointerHaveDot = () => {
