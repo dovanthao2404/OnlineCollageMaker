@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Menu } from 'antd';
 import {
     PlusSquareOutlined,
-    FileImageOutlined
+    FileImageOutlined,
+    PlusOutlined
 } from '@ant-design/icons';
 import "./style.scss";
 import { fabric } from "fabric";
@@ -15,7 +16,6 @@ import Triangle from './Triangle';
 import Circle from './Circle';
 import Line from './Line';
 import CircleBorder from './CircleBorder';
-
 
 
 export default function Navbar() {
@@ -59,6 +59,26 @@ export default function Navbar() {
                 </Menu>
 
                 {type === "image" ? (<div className="list-image">
+                    <div className='item'>
+                        <label htmlFor="file-image">
+                            <PlusOutlined style={{
+                                fontSize: 100,
+                                cursor: "pointer"
+                            }} />
+                        </label>
+                        <input style={{ display: "none" }} type="file" id='file-image' onChange={async (e) => {
+                            const { files } = e.target;
+                            const file = files[0];
+                            if (file?.type.includes("image")) {
+                                const reader = new FileReader();
+                                await reader.readAsDataURL(file);
+                                reader.onload = (e) => {
+                                    const dataTemp = [e.target.result, ...data];
+                                    setData(dataTemp);
+                                };
+                            }
+                        }} />
+                    </div>
                     {data?.map((item, index) => {
                         return <div key={index} className="item">
                             <img onError={(e) => {
