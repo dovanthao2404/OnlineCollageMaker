@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { actChangeBGColor, actSetListObj, actSetObjActive } from '../../../../redux/actions/editor';
 
@@ -8,7 +8,7 @@ export default function Tool() {
     const dispatch = useDispatch();
 
     const { canvas, itemActive } = useSelector(state => state.editorReducer);
-
+    const [isPen, setIsPen] = useState(false);
 
     const handleRemove = () => {
         if (canvas.getActiveObject()) {
@@ -84,8 +84,7 @@ export default function Tool() {
             canvas.freeDrawingBrush.width = 10;
 
             canvas.isDrawingMode = true;
-        } else {
-            canvas.isDrawingMode = false;
+            setIsPen(true);
         }
     };
 
@@ -134,6 +133,10 @@ export default function Tool() {
                     canvas.renderAll();
                 }} />
                 <button onClick={handleDrawingMode}>Pen</button>
+                {isPen ? <button onClick={() => {
+                    setIsPen(false);
+                    canvas.isDrawingMode = false;
+                }}>Cancel Pen</button> : ""}
 
             </div>
 
@@ -164,6 +167,6 @@ export default function Tool() {
 
             </div>
 
-        </div>
+        </div >
     );
 }
