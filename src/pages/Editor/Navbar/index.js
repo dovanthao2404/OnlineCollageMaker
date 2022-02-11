@@ -65,6 +65,7 @@ export default function Navbar() {
                                 fontSize: 100,
                                 cursor: "pointer"
                             }} />
+                            <p>Add Image</p>
                         </label>
                         <input style={{ display: "none" }} type="file" id='file-image' onChange={async (e) => {
                             const { files } = e.target;
