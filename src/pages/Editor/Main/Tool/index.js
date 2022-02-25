@@ -7,8 +7,9 @@ import { fabric } from "fabric";
 export default function Tool() {
     const dispatch = useDispatch();
 
-    const { canvas, itemActive } = useSelector(state => state.editorReducer);
+    const { canvas, } = useSelector(state => state.editorReducer);
     const [isPen, setIsPen] = useState(false);
+    const itemActive = canvas?.getActiveObject();
 
     const handleRemove = () => {
         if (canvas.getActiveObject()) {
@@ -166,7 +167,15 @@ export default function Tool() {
                 {handleRenderToolText()}
 
             </div>
-
+            {itemActive && <>
+                <div>
+                    opacity
+                    <input defaultValue={itemActive.opacity * 100} min={0} max={100} type="range" onChange={(e) => {
+                        itemActive.set("opacity", e.target.value / 100);
+                        canvas.renderAll();
+                    }} />
+                </div>
+            </>}
         </div >
     );
 }

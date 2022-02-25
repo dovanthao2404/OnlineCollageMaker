@@ -87,6 +87,7 @@ export default function Photo() {
                     dispatch(actSetObjActive(e.target));
                 }
             });
+
             canvas.on("mouse:down", (e) => {
                 if (!canvas.isDrawingMode) {
                     if (e.target === null) {
@@ -108,7 +109,15 @@ export default function Photo() {
                     dispatch(actSetListObj(canvas.getObjects()));
                 }
             });
+            // canvas.on('mouse:over', function (e) {
+            //     e.target.set('fill', 'red');
+            //     canvas.renderAll();
+            // });
 
+            // canvas.on('mouse:out', function (e) {
+            //     e.target.set('fill', 'green');
+            //     canvas.renderAll();
+            // });
             canvas.on({
                 "object:moving": endPointOfLineFollowPointer,
                 "selection:cleared": removePointersOnSelectionCleared,

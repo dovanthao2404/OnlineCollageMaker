@@ -1,3 +1,4 @@
+import { convertLegacyProps } from 'antd/lib/button/button';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
@@ -12,19 +13,19 @@ export default function Item({ item }) {
         classActive = "active";
     }
     if (item.id !== "pointer1" && item.id !== "pointer2") {
+
         return (
             <div className={`item ${classActive}`}>
                 {src ? <img src={src} alt="" /> : item.name}
                 <button onClick={() => {
-                    canvas.moveTo(item, canvas.getObjects().indexOf(item) + 1);
-                    canvas.requestRenderAll();
+                    canvas.bringForward(item);
+
                     dispatch(actSetListObj(canvas.getObjects()));
 
                 }}>up</button>
                 <button onClick={() => {
                     if (canvas.getObjects().indexOf(item) !== 0) {
-                        canvas.moveTo(item, canvas.getObjects().indexOf(item) - 1);
-                        canvas.requestRenderAll();
+                        canvas.sendToBack(item);
                         dispatch(actSetListObj(canvas.getObjects()));
                     }
                 }}>down</button>
